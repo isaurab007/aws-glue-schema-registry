@@ -17,6 +17,7 @@ add_library(
         read_only_byte_array.c
         mutable_byte_array.c
         glue_schema_registry_error.c
+        glue_schema_registry_config.c
 )
 add_custom_command(
         TARGET ${DATA_TYPES_MODULE_NAME}
@@ -46,9 +47,18 @@ add_library(
         glue_schema_registry_deserializer.c
 )
 
+# Find libyaml
+find_library(YAML_LIBRARY NAMES yaml libyaml)
+find_path(YAML_INCLUDE_DIR NAMES yaml.h)
+
+if(NOT YAML_LIBRARY)
+    message(FATAL_ERROR "libyaml not found. Please install libyaml-dev package.")
+endif()
+
 target_link_libraries(
         ${DATA_TYPES_MODULE_NAME}
         ${AWS_COMMON_MEMALLOC}
+        ${YAML_LIBRARY}
 )
 
 target_link_libraries(
@@ -107,6 +117,7 @@ add_custom_command(
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${NATIVE_SCHEMA_REGISTRY_MODULE_NAME}> ${CSHARP_GEN_LIB_PATH}/
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${AWS_COMMON_MEMALLOC}> ${CSHARP_GEN_LIB_PATH}/
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${SERDE_MODULE_NAME}> ${CSHARP_GEN_LIB_PATH}/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/gsr-config.yaml.template ${CSHARP_ROOT_PATH}/
 )
 
 ####Python

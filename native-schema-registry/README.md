@@ -21,6 +21,31 @@ Usually, the process is as follows:
 
 On Amazon Linux, you might need to install cmake, Python, locv, llvm etc and set PATHs accordingly to make it work. These setps are not necessary on Ubnutu as they come in-built.
 
+## Configuration
+
+The library now supports YAML-based configuration files for easy setup. This allows customers to configure the library without code changes.
+
+### Configuration File Locations
+
+The library will search for a configuration file in the following locations (in order of precedence):
+
+1. Path specified by the `GLUE_SCHEMA_REGISTRY_CONFIG` environment variable
+2. `./gsr-config.yaml` (current directory)
+3. `~/.aws/gsr-config.yaml` (user home directory)
+4. `/etc/aws/gsr-config.yaml` (system directory)
+
+See [CONFIG.md](csharp/AWSGsrSerDe/CONFIG.md) for detailed documentation on the configuration options.
+
+### Example Usage
+
+```csharp
+// The configuration is automatically loaded from the YAML file
+var serializer = new GlueSchemaRegistrySerializer();
+byte[] result = serializer.Serialize(data, schema);
+```
+
+A template configuration file is provided at `c/src/gsr-config.yaml.template`.
+
 -------------
 
 #### Initialize class at build time when building GraalVM Native Image

@@ -9,10 +9,12 @@ import com.google.common.collect.ImmutableMap;
 import org.graalvm.nativeimage.IsolateThread;
 import org.graalvm.nativeimage.c.CContext;
 import org.graalvm.nativeimage.c.function.CEntryPoint;
+import org.graalvm.nativeimage.c.type.CCharPointer;
 import org.graalvm.nativeimage.c.type.CTypeConversion;
 import org.graalvm.word.WordFactory;
 import software.amazon.awssdk.services.glue.model.DataFormat;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.amazonaws.services.schemaregistry.ByteArrayConverter.fromCReadOnlyByteArray;
@@ -32,8 +34,7 @@ public class GlueSchemaRegistryDeserializationHandler {
 
     @CEntryPoint(name = "initialize_deserializer")
     public static void initializeDeserializer(IsolateThread isolateThread) {
-        //TODO: Add GlueSchemaRegistryConfiguration to this method. This is hard-coded for now.
-        //TODO: Error handling
+        // Default configuration for backward compatibility
         Map<String, String> configMap =
             ImmutableMap.of(
                 AWSSchemaRegistryConstants.AWS_REGION,
@@ -42,6 +43,74 @@ public class GlueSchemaRegistryDeserializationHandler {
         GlueSchemaRegistryConfiguration glueSchemaRegistryConfiguration =
             new GlueSchemaRegistryConfiguration(configMap);
 
+        DeserializerInstance.create(glueSchemaRegistryConfiguration);
+    }
+    
+    @CEntryPoint(name = "initialize_deserializer_with_config")
+    public static void initializeDeserializerWithConfig(
+        IsolateThread isolateThread,
+        CCharPointer awsRegion,
+        CCharPointer awsEndpoint,
+        CCharPointer registryName,
+        CCharPointer schemaName,
+        int schemaAutoRegistration,
+        CCharPointer compatibilitySetting,
+        CCharPointer description,
+        int cacheSize,
+        long cacheTtlMillis,
+        CCharPointer compressionType,
+        CCharPointer secondaryDeserializer,
+        CCharPointer dataFormat,
+        CCharPointer protobufMessageType
+    ) {
+        // Convert C strings to Java and build configuration map
+        Map<String, String> configMap = new HashMap<>();
+        
+        // AWS & Core Settings (P0)
+        if (awsRegion.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.AWS_REGION, CTypeConversion.toJavaString(awsRegion));
+        }
+        if (awsEndpoint.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.AWS_ENDPOINT, CTypeConversion.toJavaString(awsEndpoint));
+        }
+        if (registryName.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.REGISTRY_NAME, CTypeConversion.toJavaString(registryName));
+        }
+        
+        // Schema Management (P0)
+        if (schemaName.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.SCHEMA_NAME, CTypeConversion.toJavaString(schemaName));
+        }
+        configMap.put(AWSSchemaRegistryConstants.SCHEMA_AUTO_REGISTRATION_SETTING, String.valueOf(schemaAutoRegistration == 1));
+        if (compatibilitySetting.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.COMPATIBILITY_SETTING, CTypeConversion.toJavaString(compatibilitySetting));
+        }
+        if (description.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.DESCRIPTION, CTypeConversion.toJavaString(description));
+        }
+        
+        // Performance & Caching (P0)
+        configMap.put(AWSSchemaRegistryConstants.CACHE_SIZE, String.valueOf(cacheSize));
+        configMap.put(AWSSchemaRegistryConstants.CACHE_TIME_TO_LIVE_MILLIS, String.valueOf(cacheTtlMillis));
+        
+        // Advanced Features (P0)
+        if (compressionType.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.COMPRESSION_TYPE, CTypeConversion.toJavaString(compressionType));
+        }
+        if (secondaryDeserializer.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.SECONDARY_DESERIALIZER, CTypeConversion.toJavaString(secondaryDeserializer));
+        }
+        
+        // Data Format Settings (P0)
+        if (dataFormat.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.DATA_FORMAT, CTypeConversion.toJavaString(dataFormat));
+        }
+        if (protobufMessageType.isNonNull()) {
+            configMap.put(AWSSchemaRegistryConstants.PROTOBUF_MESSAGE_TYPE, CTypeConversion.toJavaString(protobufMessageType));
+        }
+        
+        // Create GSR configuration and initialize deserializer
+        GlueSchemaRegistryConfiguration glueSchemaRegistryConfiguration = new GlueSchemaRegistryConfiguration(configMap);
         DeserializerInstance.create(glueSchemaRegistryConfiguration);
     }
 

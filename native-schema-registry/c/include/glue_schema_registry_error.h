@@ -10,6 +10,7 @@
 #define ERR_CODE_GRAALVM_TEARDOWN_EXCEPTION 5003
 #define ERR_CODE_INVALID_PARAMETERS 5004
 #define ERR_CODE_RUNTIME_ERROR 5005
+#define ERR_CODE_CONFIG_LOAD_FAILED 5006
 
 //TODO: Improve error reporting to respect logging levels.
 #define log_warn(msg, code) fprintf(stderr, "WARN: %s, Code: %d\n", msg, code)

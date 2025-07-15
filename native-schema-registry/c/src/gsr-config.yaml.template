@@ -1,0 +1,59 @@
+# AWS Glue Schema Registry Configuration Template
+# Copy this file to one of the following locations:
+# - ./gsr-config.yaml (current directory)
+# - ~/.aws/gsr-config.yaml (user home directory)
+# - /etc/aws/gsr-config.yaml (system directory)
+# Or set the GLUE_SCHEMA_REGISTRY_CONFIG environment variable to the path of your config file
+
+# AWS & Core Settings (P0)
+aws:
+  # AWS region where Schema Registry is located
+  region: "us-east-1"
+  
+  # Custom AWS endpoint URL (optional)
+  endpoint: "https://glue.us-east-1.amazonaws.com"
+
+# Registry Settings (P0)
+registry:
+  # Name of the schema registry (defaults to "default-registry")
+  name: "my-registry"
+  
+  # Enable automatic schema registration
+  schemaAutoRegistration: true
+  
+  # Schema evolution compatibility (BACKWARD, FORWARD, FULL, NONE)
+  compatibilitySetting: "BACKWARD"
+  
+  # Description for the schema/registry
+  description: "My schema registry"
+
+# Schema Settings (P0)
+schema:
+  # Name of the schema (defaults to topic/stream name)
+  name: "my-schema"
+
+# Cache Settings (P0)
+cache:
+  # Maximum number of entries in local cache (default: 200)
+  size: 200
+  
+  # Time-to-live for cache entries in milliseconds (default: 24 hours)
+  ttlMillis: 86400000
+
+# Data Format Settings (P0)
+dataFormat:
+  # Data serialization format (AVRO, JSON, PROTOBUF)
+  type: "PROTOBUF"
+  
+  # Protobuf settings
+  protobuf:
+    # Type of Protobuf message (POJO, DYNAMIC_MESSAGE)
+    messageType: "POJO"
+
+# Advanced Features (P0)
+advanced:
+  # Data compression type (NONE, ZLIB)
+  compressionType: "NONE"
+  
+  # Fallback deserializer for migration scenarios
+  secondaryDeserializer: ""
