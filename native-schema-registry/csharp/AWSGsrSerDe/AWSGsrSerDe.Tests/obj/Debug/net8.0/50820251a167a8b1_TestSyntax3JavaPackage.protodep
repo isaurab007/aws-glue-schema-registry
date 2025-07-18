@@ -1,0 +1,2 @@
+.proto/TestSyntax3JavaPackage.cs: ../../../shared/test/protos/google/type/money.proto\
+ ../../../shared/test/protos/TestSyntax3JavaPackage.proto

@@ -4,4 +4,4 @@
 
 #Ignore Maven files
 **/target
-
+**/build

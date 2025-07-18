@@ -1,0 +1,19 @@
+# AWS Glue Schema Registry Configuration
+
+# AWS Region
+aws.region: us-east-1
+
+# Schema Registry settings
+registry.name: my-registry
+schema.auto.registration: true
+
+# Cache settings
+cache.time.to.live.millis: 60000
+cache.size: 100
+
+# Data format settings
+data.format: AVRO
+avro.record.type: GENERIC_RECORD
+
+# Compression settings
+compression.type: ZLIB

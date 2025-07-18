@@ -1,0 +1,521 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AWSGsrSerDe</name>
+    </assembly>
+    <members>
+        <member name="T:AWSGsrSerDe.AwsSchemaRegistryException">
+            <summary>
+            Represents exceptions thrown from Serializer / Deserializer methods.
+            </summary>
+        </member>
+        <member name="T:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration">
+            <summary>
+            Glue Schema Registry Configuration entries.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration"/> class.
+            Build Configuration object from config elements
+            </summary>
+            <param name="configs">non-nested Dictionary contains key-value pairs for configuration</param>
+        </member>
+        <member name="P:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration.DataFormat">
+            <summary>
+            Gets the data format configured
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration.AvroRecordType">
+            <summary>
+            Gets the Avro Record Type configured
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration.ProtobufMessageDescriptor">
+            <summary>
+            Gets the Protobuf Message Descriptor provided
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.common.GlueSchemaRegistryConfiguration.JsonObjectType">
+            <summary>
+            Gets the Object type that the Json message should be de-serialized to
+            if this value is not set, Json message will be de-serialized into plain Json
+            </summary>
+        </member>
+        <member name="T:AWSGsrSerDe.common.GlueSchemaRegistryConstants">
+            <summary>
+            Constants and enums
+            </summary>
+        </member>
+        <member name="T:AWSGsrSerDe.common.ISchemaNameStrategy">
+            <summary>
+            Interface for Schema Naming strategy
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.common.ISchemaNameStrategy.GetSchemaName(System.Object,System.String)">
+            <summary>
+            Generates the schema name
+            </summary>
+            <param name="data">message object to serialize</param>
+            <param name="topic">Kafka topic name</param>
+            <returns>schema name</returns>
+        </member>
+        <member name="T:AWSGsrSerDe.common.DefaultSchemaNameStrategy">
+            <summary>
+            Default Schema Naming Strategy
+            Name the Schema with topic name
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.common.DefaultSchemaNameStrategy.GetSchemaName(System.Object,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:AWSGsrSerDe.deserializer.avro.AvroDeserializer">
+            <summary>
+            Avro specific de-serializer responsible for handling the Avro protocol
+            specific conversion behavior.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.avro.AvroDeserializer.#ctor(AWSGsrSerDe.common.GlueSchemaRegistryConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.deserializer.avro.AvroDeserializer"/> class.
+            </summary>
+            <param name="configs">configuration elements</param>
+        </member>
+        <member name="P:AWSGsrSerDe.deserializer.avro.AvroDeserializer.CacheSize">
+            <summary>
+            Gets size of the datum reader cache for testing purpose
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.avro.AvroDeserializer.Deserialize(System.Byte[],AWSGsrSerDe.GlueSchemaRegistrySchema)">
+            <summary>
+            Deserialize the bytes to the original Avro message given the schema retrieved
+            from the schema registry.
+            </summary>
+            <param name="data">data to be de-serialized</param>
+            <param name="schema">Avro schema</param>
+            <returns>de-serialized object</returns>
+            <exception cref="T:AWSGsrSerDe.AwsSchemaRegistryException">Exception during de-serialization.</exception>
+        </member>
+        <member name="T:AWSGsrSerDe.deserializer.DataFormatDeserializerFactory">
+            <summary>
+            Factory to create a new instance of protocol specific de-serializer.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.DataFormatDeserializerFactory.GetInstance">
+            <summary>
+            Get the singleton instance of deserializer factory
+            </summary>
+            <returns>singleton instance of deserializer factory</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.DataFormatDeserializerFactory.GetDeserializer(System.String,AWSGsrSerDe.common.GlueSchemaRegistryConfiguration)">
+            <summary>
+            Lazy initializes and returns a specific de-serializer instance.
+            </summary>
+            <param name="dataFormat">dataFormat for creating appropriate instance</param>
+            <param name="configs">configuration elements for de-serializers</param>
+            <returns>protocol specific de-serializer instance.</returns>
+            <exception cref="T:AWSGsrSerDe.AwsSchemaRegistryException">Unsupported Data format.</exception>
+        </member>
+        <member name="T:AWSGsrSerDe.deserializer.GlueSchemaRegistryKafkaDeserializer">
+            <summary>
+            Glue Schema Registry Kafka Generic Deserializer responsible for de-serializing
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.GlueSchemaRegistryKafkaDeserializer.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.deserializer.GlueSchemaRegistryKafkaDeserializer"/> class.
+            </summary>
+            <param name="configs">configuration elements for de-serializer</param>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.GlueSchemaRegistryKafkaDeserializer.Configure(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Configures the <see cref="T:AWSGsrSerDe.deserializer.GlueSchemaRegistryKafkaDeserializer"/> instance
+            </summary>
+            <param name="configs">configuration elements for de-serializer</param>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.GlueSchemaRegistryKafkaDeserializer.Deserialize(System.String,System.Byte[])">
+            <summary>
+            De-serialize operation for de-serializing the byte array to an Object.
+            </summary>
+            <param name="topic">Kafka topic name</param>
+            <param name="data">serialized data to be de-serialized in byte array</param>
+            <returns>de-serialized object instance</returns>
+        </member>
+        <member name="T:AWSGsrSerDe.deserializer.IDataFormatDeserializer">
+            <summary>
+            Interface for all schemaType/protocol/dataformat specific de-serializer implementations.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.IDataFormatDeserializer.Deserialize(System.Byte[],AWSGsrSerDe.GlueSchemaRegistrySchema)">
+            <summary>
+            De-serializes the given ByteBuffer to an Object.
+            </summary>
+            <param name="data">data to de-serialize as byte array</param>
+            <param name="schema">schema for the data</param>
+            <returns>de-serialized object</returns>
+        </member>
+        <member name="T:AWSGsrSerDe.deserializer.json.JsonDeserializer">
+            <summary>
+            Json specific de-serializer responsible for handling the Json data format
+            specific deserialization behavior.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.json.JsonDeserializer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.deserializer.json.JsonDeserializer"/> class.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.json.JsonDeserializer.#ctor(AWSGsrSerDe.common.GlueSchemaRegistryConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.deserializer.json.JsonDeserializer"/> class.
+            </summary>
+            <param name="config">configuration elements</param>
+            <exception cref="T:System.ArgumentNullException">config passed in is null.</exception>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.json.JsonDeserializer.Deserialize(System.Byte[],AWSGsrSerDe.GlueSchemaRegistrySchema)">
+            <inheritdoc />
+        </member>
+        <member name="T:AWSGsrSerDe.deserializer.protobuf.ProtobufDeserializer">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.protobuf.ProtobufDeserializer.#ctor(AWSGsrSerDe.common.GlueSchemaRegistryConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.deserializer.protobuf.ProtobufDeserializer"/> class.
+            </summary>
+            <param name="config">configuration element</param>
+        </member>
+        <member name="M:AWSGsrSerDe.deserializer.protobuf.ProtobufDeserializer.Deserialize(System.Byte[],AWSGsrSerDe.GlueSchemaRegistrySchema)">
+            <inheritdoc />
+        </member>
+        <member name="T:AWSGsrSerDe.GlueSchemaRegistryDeserializer">
+            <summary>
+            GlueSchemaRegistryDeserializer class that decodes the given byte array encoded with GSR schema headers.
+            </summary>>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistryDeserializer.Decode(System.Byte[])">
+            <summary>
+            Decodes the given GSR encoded byte array.
+            </summary>
+            <param name="encoded">Encoded byte array</param>
+            <returns>Decoded byte array</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistryDeserializer.CanDecode(System.Byte[])">
+            <summary>
+            Checks if the given GSR encoded byte array is valid and can be decoded.
+            </summary>
+            <param name="encoded">Encoded byte array</param>
+            <returns>true / false</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistryDeserializer.DecodeSchema(System.Byte[])">
+            <summary>
+            Decodes the byte array and returns the associated GSR Schema.
+            </summary>
+            <param name="encoded">Encoded byte array</param>
+            <returns>GlueSchemaRegistrySchema object associated with the encoded byte array</returns>
+        </member>
+        <member name="T:AWSGsrSerDe.GlueSchemaRegistrySchema">
+            <summary>
+            GlueSchemaRegistrySchema specifies the schemaName, schemaDefinition and data format
+            associated with the schema managed by Glue Schema Registry.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySchema.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.GlueSchemaRegistrySchema"/> class.
+            </summary>
+            <param name="schemaName">schema name</param>
+            <param name="schemaDef">schema definition</param>
+            <param name="dataFormat">data format</param>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySchema.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.GlueSchemaRegistrySchema"/> class.
+            </summary>
+            <param name="schemaName">schema name</param>
+            <param name="schemaDef">schema definition</param>
+            <param name="dataFormat">data format</param>
+            <param name="additionalSchemaInfo">additional schema info for this schema,
+            e.g. Protobuf Message descriptor full name</param>
+        </member>
+        <member name="P:AWSGsrSerDe.GlueSchemaRegistrySchema.SchemaName">
+            <summary>
+            Gets schema name
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.GlueSchemaRegistrySchema.SchemaDef">
+            <summary>
+            Gets schema definition, for Protobuf it is the base64 encoded schemaDef
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.GlueSchemaRegistrySchema.DataFormat">
+            <summary>
+            Gets the Data format of the schema
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.GlueSchemaRegistrySchema.AdditionalSchemaInfo">
+            <summary>
+            Gets the additional information(if any) for the schema, for example,
+            we store the Protobuf descriptor full name in this field
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySchema.SetAdditionalSchemaInfo(System.String)">
+            <summary>
+            Sets the Additional schema info for this schema
+            </summary>
+            <param name="additionalSchemaInfo">Additional schema information</param>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySchema.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySchema.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySchema.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:AWSGsrSerDe.GlueSchemaRegistrySerializer">
+            <summary>
+            GlueSchemaRegistrySerializer class that encodes the given byte array with GSR schema headers.
+            Schema registration / data compression can happen based on specified configuration.
+            </summary>>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySerializer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.GlueSchemaRegistrySerializer"/> class.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySerializer.Finalize">
+            <summary>
+            Finalizes an instance of the <see cref="T:AWSGsrSerDe.GlueSchemaRegistrySerializer"/> class.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySerializer.Encode(System.String,AWSGsrSerDe.GlueSchemaRegistrySchema,System.Byte[])">
+            <summary>
+            Encodes the given bytes with GlueSchemaRegistry header information.
+            <param name="transportName">Name of the transport. Defaults to "default-stream" if not specified.</param>
+            <param name="schema">GlueSchemaRegistrySchema object to encode with.</param>
+            <param name="bytes">Input bytes for a message to encode with Schema Registry header information.</param>
+            </summary>
+            <returns>Encoded bytes</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.GlueSchemaRegistrySerializer.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.avro.AvroSerializer">
+            <summary>
+            Avro serialization helper.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.avro.AvroSerializer.#ctor(AWSGsrSerDe.common.GlueSchemaRegistryConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.serializer.avro.AvroSerializer"/> class.
+            </summary>
+            <param name="configuration">configuration elements</param>
+        </member>
+        <member name="P:AWSGsrSerDe.serializer.avro.AvroSerializer.CacheSize">
+            <summary>
+            Gets size of datum writer cache for testing purpose
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.avro.AvroSerializer.Serialize(System.Object)">
+            <summary>
+            Serialize the Avro message to bytes
+            </summary>
+            <param name="data">the Avro message for serialization</param>
+            <returns>the serialized byte array</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.avro.AvroSerializer.GetSchemaDefinition(System.Object)">
+            <summary>
+            Get the schema definition.
+            </summary>
+            <param name="data">object for which schema definition has to be derived</param>
+            <returns>schema string</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.avro.AvroSerializer.Validate(System.String,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.avro.AvroSerializer.Validate(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.avro.AvroSerializer.SetAdditionalSchemaInfo(System.Object,AWSGsrSerDe.GlueSchemaRegistrySchema@)">
+            <inheritdoc />
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.DataFormatSerializerFactory">
+            <summary>
+            Factory to create a new instance of protocol specific serializer.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.DataFormatSerializerFactory.GetInstance">
+            <summary>
+            Gets the singleton instance of the serializer factory
+            </summary>
+            <returns>the singleton instance of the serializer factory</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.DataFormatSerializerFactory.GetSerializer(System.String)">
+            <summary>
+            Lazy initializes and returns a specific de-serializer instance.
+            </summary>
+            <param name="dataFormat">dataFormat for creating appropriate instance</param>
+            <returns>protocol specific de-serializer instance.</returns>
+            <exception cref="T:AWSGsrSerDe.AwsSchemaRegistryException">Unsupported data format.</exception>
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.GlueSchemaRegistryKafkaSerializer">
+            <summary>
+            Glue Schema Registry Serializer to be used with Kafka Producers.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.GlueSchemaRegistryKafkaSerializer.#ctor(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:AWSGsrSerDe.serializer.GlueSchemaRegistryKafkaSerializer"/> class.
+            </summary>
+            <param name="configs">configuration elements for serializer</param>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.GlueSchemaRegistryKafkaSerializer.Configure(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Configures the <see cref="T:AWSGsrSerDe.serializer.GlueSchemaRegistryKafkaSerializer"/> instance
+            </summary>
+            <param name="configs">configuration elements for serializer</param>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.GlueSchemaRegistryKafkaSerializer.Serialize(System.Object,System.String)">
+            <summary>
+            serializes the given Object to an byte array.
+            </summary>
+            <param name="data">message to serialize into byte array</param>
+            <param name="topic">name of the Kafka topic</param>
+            <returns>serialized byte array</returns>
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.IDataFormatSerializer">
+            <summary>
+            Interface for all schemaType/protocol/data format specific serializer implementations.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.IDataFormatSerializer.Serialize(System.Object)">
+            <summary>
+            serializes the given Object to an byte array.
+            </summary>
+            <param name="data">message to serialize into byte array</param>
+            <returns>serialized byte array</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.IDataFormatSerializer.GetSchemaDefinition(System.Object)">
+            <summary>
+            Gets schema definition from Object
+            </summary>
+            <param name="data">message to serialize into byte array</param>
+            <returns>schema definition as string</returns>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.IDataFormatSerializer.Validate(System.String,System.Byte[])">
+            <summary>
+            Validate the given data against the schema definition if the implementing format supports it.
+            </summary>
+            <param name="schemaDefinition">SchemaDefinition as String.</param>
+            <param name="data">Data as byte array.</param>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.IDataFormatSerializer.Validate(System.Object)">
+            <summary>
+            Validate the data format object to ensure it conforms to schema if implementation supports it.
+            </summary>
+            <param name="data">DataFormat specific object.</param>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.IDataFormatSerializer.SetAdditionalSchemaInfo(System.Object,AWSGsrSerDe.GlueSchemaRegistrySchema@)">
+            <summary>
+            Supplies additional information that is needed in GlueSchemaRegistrySchema for the message serialization.
+            </summary>
+            <param name="data">message to serialize into byte array.</param>
+            <param name="schema">schema object for the message that will be updated with additional info.</param>
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.json.JsonDataWithSchema">
+            <summary>
+            Wrapper object that contains schema string and json data string
+            This works similar to the notion of GenericRecord in Avro.
+            This can be passed as an input to the serializer for json data format.
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.serializer.json.JsonDataWithSchema.Schema">
+            <summary>
+            Json Schema string
+            </summary>
+        </member>
+        <member name="P:AWSGsrSerDe.serializer.json.JsonDataWithSchema.Payload">
+            <summary>
+            json data/payload/document to be serialized
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonDataWithSchema.Build(System.String,System.String)">
+            <summary>
+            Build a new instance of the <see cref="T:AWSGsrSerDe.serializer.json.JsonDataWithSchema"/> class.
+            </summary>
+            <param name="schema">json schema string</param>
+            <param name="payload">json schema data</param>
+            <returns> a json </returns>
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.json.JsonSerializer">
+            <summary>
+            Json serialization helper.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonSerializer.Serialize(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonSerializer.GetSchemaDefinition(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonSerializer.Validate(System.String,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonSerializer.Validate(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonSerializer.SetAdditionalSchemaInfo(System.Object,AWSGsrSerDe.GlueSchemaRegistrySchema@)">
+            <inheritdoc />
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.json.JsonValidator">
+            <summary>
+            Json validator
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.json.JsonValidator.ValidateDataWithSchema(NJsonSchema.JsonSchema,System.Text.Json.Nodes.JsonNode)">
+            <summary>
+            Validates data against JsonSchema
+            </summary>
+            <param name="schema"></param>
+            <param name="dataNode"></param>
+            <exception cref="T:AWSGsrSerDe.AwsSchemaRegistryException"></exception>
+        </member>
+        <member name="T:AWSGsrSerDe.serializer.protobuf.ProtobufSerializer">
+            <summary>
+            Avro serialization helper.
+            </summary>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.protobuf.ProtobufSerializer.Serialize(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.protobuf.ProtobufSerializer.GetSchemaDefinition(System.Object)">
+            <summary>
+            There is no easy way to return Protobuf schema definition in C#, we will return a Base64 encoded
+            Protobuf data that can be parsed later.
+            </summary>
+            <param name="data">Protobuf message object</param>
+            <returns>Base64 Encoded ByteString of the file descriptor</returns>
+            <exception cref="T:AWSGsrSerDe.AwsSchemaRegistryException">Exception during getting Base64 encoded Protobuf Schema.</exception>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.protobuf.ProtobufSerializer.Validate(System.String,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.protobuf.ProtobufSerializer.Validate(System.Object)">
+            <summary>
+            Validate the data format object to ensure it conforms to schema if implementation supports it.
+            </summary>
+            <param name="data">DataFormat specific object.</param>
+            <exception cref="T:System.ArgumentNullException">Exception if data is null.</exception>
+            <exception cref="T:AWSGsrSerDe.AwsSchemaRegistryException">Exception if data is not a Protobuf Message.</exception>
+        </member>
+        <member name="M:AWSGsrSerDe.serializer.protobuf.ProtobufSerializer.SetAdditionalSchemaInfo(System.Object,AWSGsrSerDe.GlueSchemaRegistrySchema@)">
+            <summary>
+            Add following additional schema information for Protobuf message:
+            1. Protobuf descriptor fullname of the message
+            </summary>
+            <param name="data">Protobuf message object</param>
+            <param name="schema">Schema object to add addition schema info</param>
+        </member>
+    </members>
+</doc>

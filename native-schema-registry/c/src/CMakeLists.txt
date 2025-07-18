@@ -44,6 +44,7 @@ add_library(
         ${SERDE_MODULE_NAME} SHARED
         glue_schema_registry_serializer.c
         glue_schema_registry_deserializer.c
+        glue_schema_registry_config.c
 )
 
 target_link_libraries(

@@ -1,0 +1,1 @@
+.proto/SnakeCaseFile.cs: ../../../shared/test/protos/snake_case_file.proto

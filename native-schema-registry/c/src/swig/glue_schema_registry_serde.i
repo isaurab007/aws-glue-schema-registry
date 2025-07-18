@@ -6,3 +6,4 @@
 %include "glue_schema_registry_schema.i"
 %include "glue_schema_registry_serializer.i"
 %include "glue_schema_registry_deserializer.i"
+%include "glue_schema_registry_config.i"

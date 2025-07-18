@@ -1,0 +1,2 @@
+.proto/ComplexNestingSyntax2.cs: /home/ec2-user/.nuget/packages/grpc.tools/2.48.1/build/native/include/google/protobuf/timestamp.proto\
+ ../../../shared/test/protos/ComplexNestingSyntax2.proto

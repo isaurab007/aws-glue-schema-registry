@@ -1,0 +1,16 @@
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/bin/Debug/net8.0/GsrSerDeCsGen.so
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/bin/Debug/net8.0/libnativeschemaregistry.so
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/bin/Debug/net8.0/AWSGsrSerDe.deps.json
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/bin/Debug/net8.0/AWSGsrSerDe.dll
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/bin/Debug/net8.0/AWSGsrSerDe.pdb
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/bin/Debug/net8.0/AWSGsrSerDe.xml
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.csproj.AssemblyReference.cache
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.GeneratedMSBuildEditorConfig.editorconfig
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.AssemblyInfoInputs.cache
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.AssemblyInfo.cs
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.csproj.CoreCompileInputs.cache
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.sourcelink.json
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.dll
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/refint/AWSGsrSerDe.dll
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/AWSGsrSerDe.pdb
+/home/ec2-user/workplace/jul14_common_trunk_polyglot_gsr_test/aws-glue-schema-registry/native-schema-registry/csharp/AWSGsrSerDe/AWSGsrSerDe/obj/Debug/net8.0/ref/AWSGsrSerDe.dll
