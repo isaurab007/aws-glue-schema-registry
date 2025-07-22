@@ -32,7 +32,7 @@
     <parent>
         <groupId>software.amazon.glue</groupId>
         <artifactId>schema-registry-parent</artifactId>
-        <version>1.1.10</version>
+        <version>1.1.24</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -177,6 +177,23 @@
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
         </dependency>
+        
+        <!-- New dependencies from fresh source -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <version>3.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio-fakefilesystem</artifactId>
+            <version>3.2.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -212,6 +229,18 @@
                 <version>${proto-plugin.version}</version>
                 <extensions>true</extensions>
                 <executions>
+                    <execution>
+                        <id>gencode-main</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <protocArtifact>
+                                com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
+                            </protocArtifact>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>gencode</id>
                         <phase>generate-sources</phase>

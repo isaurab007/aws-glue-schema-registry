@@ -1,9 +1,7 @@
 package com.amazonaws.services.schemaregistry.deserializer;
 
-import com.amazonaws.services.schemaregistry.deserializers.protobuf.ProtobufWireFormatDecoder;
 import com.google.protobuf.CodedInputStream;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,10 +9,13 @@ import java.util.List;
 
 public class ProtobufPostprocessor {
     public static byte[] stripMessageIndex(byte[] data) throws IOException {
-        Pair<Integer, CodedInputStream> indexAndStreamPair =
-            ProtobufWireFormatDecoder.getAndRemoveMessageIndex(data);
-
-        CodedInputStream inputStream = indexAndStreamPair.getRight();
+        // Create CodedInputStream from the data
+        CodedInputStream inputStream = CodedInputStream.newInstance(data);
+        
+        // Read and discard the message index (UInt32)
+        inputStream.readUInt32();
+        
+        // Read the remaining bytes (the actual protobuf message)
         List<Byte> output = new ArrayList<>();
         while (!inputStream.isAtEnd()) {
             byte b = inputStream.readRawByte();
