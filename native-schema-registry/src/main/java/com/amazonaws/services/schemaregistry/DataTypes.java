@@ -21,7 +21,7 @@ public class DataTypes {
      */
     static class HandlerDirectives implements CContext.Directives {
 
-        public static final String INCLUDE_PATH = "/local/workplace/isaurab/jul18_csharp_trunk/aws-glue-schema-registry/native-schema-registry/c/include/";
+        public static final String INCLUDE_PATH = "/home/ubuntu/workplace/my_gsr_fork/aws-glue-schema-registry/native-schema-registry/c/include/";
         public static final String LIB_PATH = "";
         //Intentionally blank.
         public static final String PROJECT_NAME = "";

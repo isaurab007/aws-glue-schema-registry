@@ -29,12 +29,12 @@ public class ConfigurationFileReader {
         try {
             String filePath = CTypeConversion.toJavaString(configFilePath);
             Map<String, String> configs = loadConfigFromFile(filePath);
-            
+
             // Initialize serializer and deserializer with the loaded configuration
             GlueSchemaRegistryConfiguration configuration = new GlueSchemaRegistryConfiguration(configs);
             SerializerInstance.create(configuration);
             DeserializerInstance.create(configuration);
-            
+
             return 0; // Success
         } catch (Exception e) {
             System.err.println("Failed to load configuration file: " + e.getMessage());
@@ -42,18 +42,17 @@ public class ConfigurationFileReader {
             return 1; // Error
         }
     }
-    
     public static Map<String, String> loadConfigFromFile(String filePath) throws IOException {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(filePath)) {
             properties.load(fis);
         }
-        
+
         Map<String, String> configs = new HashMap<>();
         for (String key : properties.stringPropertyNames()) {
             configs.put(key, properties.getProperty(key));
         }
-        
+
         return configs;
     }
 }
