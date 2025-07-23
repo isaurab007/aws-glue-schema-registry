@@ -39,7 +39,7 @@ glue_schema_registry_serializer *new_glue_schema_registry_serializer_with_config
     }
     
     //Initialize with configuration file
-    int config_result = initialize_serializer_with_config(serializer->instance_context, config_file_path);
+    int config_result = initialize_serializer_with_config(serializer->instance_context, (char*)config_file_path);
     if (config_result != 0) {
         delete_glue_schema_registry_serializer(serializer);
         throw_error(p_err, "Failed to initialize serializer with configuration file.", ERR_CODE_RUNTIME_ERROR);

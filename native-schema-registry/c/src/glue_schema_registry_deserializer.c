@@ -37,7 +37,7 @@ glue_schema_registry_deserializer * new_glue_schema_registry_deserializer_with_c
     }
     
     //Initialize with configuration file
-    int config_result = initialize_deserializer_with_config(deserializer->instance_context, config_file_path);
+    int config_result = initialize_deserializer_with_config(deserializer->instance_context, (char*)config_file_path);
     if (config_result != 0) {
         delete_glue_schema_registry_deserializer(deserializer);
         throw_error(p_err, "Failed to initialize deserializer with configuration file.", ERR_CODE_RUNTIME_ERROR);
