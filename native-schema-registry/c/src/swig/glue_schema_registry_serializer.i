@@ -17,6 +17,10 @@ typedef struct glue_schema_registry_serializer {
         %exception new_glue_schema_registry_serializer %glue_schema_registry_exception_interceptor(arg1)
         glue_schema_registry_serializer(glue_schema_registry_error **p_err);
 
+        //Constructor with config file path - exception on 2nd argument
+        %exception new_glue_schema_registry_serializer_with_config %glue_schema_registry_exception_interceptor(arg2)
+        glue_schema_registry_serializer(const char *config_file_path, glue_schema_registry_error **p_err);
+
         ~glue_schema_registry_serializer();
 
         //Note that the argument is '5' because the first argument is '$self'

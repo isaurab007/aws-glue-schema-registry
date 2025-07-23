@@ -17,6 +17,10 @@ typedef struct glue_schema_registry_deserializer {
         %exception new_glue_schema_registry_deserializer %glue_schema_registry_exception_interceptor(arg1)
         glue_schema_registry_deserializer(glue_schema_registry_error **p_err);
 
+        //Constructor with config file path - exception on 2nd argument
+        %exception new_glue_schema_registry_deserializer_with_config %glue_schema_registry_exception_interceptor(arg2)
+        glue_schema_registry_deserializer(const char *config_file_path, glue_schema_registry_error **p_err);
+
         ~glue_schema_registry_deserializer();
 
         //Note that the argument is '3' because the first argument is '$self'
