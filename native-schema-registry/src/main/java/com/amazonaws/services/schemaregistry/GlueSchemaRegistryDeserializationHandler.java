@@ -45,6 +45,28 @@ public class GlueSchemaRegistryDeserializationHandler {
         DeserializerInstance.create(glueSchemaRegistryConfiguration);
     }
 
+    @CEntryPoint(name = "initialize_deserializer_with_config")
+    public static int initializeDeserializerWithConfig(IsolateThread isolateThread, CCharPointer configFilePath) {
+        try {
+            if (configFilePath.isNull()) {
+                // Use default configuration when no config file provided
+                initializeDeserializer(isolateThread);
+                return 0;
+            }
+            
+            String filePath = CTypeConversion.toJavaString(configFilePath);
+            Map<String, String> configs = ConfigurationFileReader.loadConfigFromFile(filePath);
+            GlueSchemaRegistryConfiguration configuration = new GlueSchemaRegistryConfiguration(configs);
+            DeserializerInstance.create(configuration);
+            
+            return 0; // Success
+        } catch (Exception e) {
+            System.err.println("Failed to initialize deserializer with config: " + e.getMessage());
+            e.printStackTrace();
+            return 1; // Error
+        }
+    }
+
     @CEntryPoint(name = "decode")
     public static C_MutableByteArray decode(
         IsolateThread isolateThread,

@@ -28,7 +28,7 @@ public class ConfigurationFileReader {
     public static int readConfigurationFile(IsolateThread thread, CCharPointer configFilePath) {
         try {
             String filePath = CTypeConversion.toJavaString(configFilePath);
-            Map<String, Object> configs = loadConfigFromFile(filePath);
+            Map<String, String> configs = loadConfigFromFile(filePath);
             
             // Initialize serializer and deserializer with the loaded configuration
             GlueSchemaRegistryConfiguration configuration = new GlueSchemaRegistryConfiguration(configs);
@@ -43,13 +43,13 @@ public class ConfigurationFileReader {
         }
     }
     
-    private static Map<String, Object> loadConfigFromFile(String filePath) throws IOException {
+    public static Map<String, String> loadConfigFromFile(String filePath) throws IOException {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(filePath)) {
             properties.load(fis);
         }
         
-        Map<String, Object> configs = new HashMap<>();
+        Map<String, String> configs = new HashMap<>();
         for (String key : properties.stringPropertyNames()) {
             configs.put(key, properties.getProperty(key));
         }
