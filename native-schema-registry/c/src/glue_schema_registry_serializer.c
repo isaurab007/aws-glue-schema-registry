@@ -3,6 +3,8 @@
 #include "libnativeschemaregistry.h"
 #include <stdlib.h>
 
+// #define ARR_SIZE 1000
+
 typedef struct {
     graal_isolate_t *isolate;
 } serializer_context;
@@ -15,6 +17,20 @@ glue_schema_registry_serializer *new_glue_schema_registry_serializer(const char 
     serializer_context *ctx = aws_common_malloc(sizeof(serializer_context));
     ctx->isolate = NULL;
     graal_isolatethread_t *thread = NULL;
+
+    // int size = ARR_SIZE;
+    // // Allocate memory for an array of ARR_SIZE integers.
+    // int* array = (int*)malloc(size * sizeof(int));
+    
+    // // Check if memory allocation succeeded.
+    // if (array == NULL) {
+    //     printf("Memory allocation failed!\n");
+    // }
+
+    // // Do some work with the array...
+    // for (int i = 0; i < size; i++) {
+    //     array[i] = i;
+    // }
 
     //Creates isolate that can be shared across threads
     int ret = graal_create_isolate(NULL, &ctx->isolate, &thread);
@@ -40,6 +56,8 @@ glue_schema_registry_serializer *new_glue_schema_registry_serializer(const char 
     }
 
     return serializer;
+
+    // return NULL;
 }
 
 void delete_glue_schema_registry_serializer(glue_schema_registry_serializer *serializer) {

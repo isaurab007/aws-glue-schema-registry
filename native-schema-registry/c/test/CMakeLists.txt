@@ -4,7 +4,7 @@ else()
     #TODO: Figure out equivalent options for Windows
     list(APPEND SANITIZER_CHECKS "")
 endif()
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SANITIZER_CHECKS} -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SANITIZER_CHECKS} -g -Wall")
 include(cmake/FetchCMocka.cmake)
 
 set(TEST_HELPERS test_helpers)
@@ -23,6 +23,7 @@ list(
         read_only_byte_array_test
         mutable_byte_array_test
         glue_schema_registry_error_test
+        gsr_serializer_lifecycle_memory_test
 )
 
 #TODO: These tests don't work on Windows and OSX due to CMake not linking the mock library.
@@ -67,4 +68,15 @@ if (CMAKE_SYSTEM_NAME MATCHES "^(Linux)$")
     include(cmake/CodeCoverage.cmake)
     set(min_code_coverage 100)
     setup_target_for_coverage(coverage "ctest ." coverage ${min_code_coverage})
+endif()
+
+# Automated valgrind testing target
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_custom_target(valgrind-test
+        COMMAND valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 ./gsr_serializer_lifecycle_memory_test
+        DEPENDS gsr_serializer_lifecycle_memory_test copy-libs-for-tests
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Running valgrind memory analysis on GSR lifecycle test"
+        VERBATIM
+    )
 endif()
